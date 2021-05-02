@@ -16,8 +16,21 @@ ADMINS = config.ADMINS
 
 # loger = str(datetime.today().time())[0:8]+' || '+message.from_user.full_name+' || @'+message.from_user.username+' || '+message.text
 
+@dp.message_handler(commands=['state'])
+async def state(message: types.Message):
+    print(message.from_user.full_name + ' || @' + message.from_user.username + ' || ' + message.text)
+    url = 'https://sourceforge.net/projects/dft-builds/'
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'lxml')
+    lst_updt = soup.find('div', class_='stats').find('time', class_='dateUpdated').text
+    week_dwnl = soup.find('div', class_='stats').find('a', href='/projects/dft-builds/files/stats/timeline').text
+    state = 'Последнее обновление: '+lst_updt+'\n' \
+            'Количество скачиваний: '+week_dwnl+'\n'
+    await message.reply(state)
+
+
 @dp.message_handler(commands=['status'])
-async def process_start_command(message: types.Message):
+async def status(message: types.Message):
     print(message.from_user.full_name + ' || @' + message.from_user.username + ' || ' + message.text)
     status = "I am Alive!\n"
     status += "Uptime: " + str((datetime.now() - startTime))
