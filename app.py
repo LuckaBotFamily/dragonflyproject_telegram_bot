@@ -26,7 +26,7 @@ async def state(message: types.Message):
     week_dwnl = soup.find('div', class_='stats').find('a', href='/projects/dft-builds/files/stats/timeline').text
     state = 'Последнее обновление: '+lst_updt+'\n' \
             'Количество скачиваний: '+week_dwnl+'\n'
-    await message.reply(state)
+    await message.answer(state)
 
 
 @dp.message_handler(commands=['status'])
@@ -38,7 +38,7 @@ async def status(message: types.Message):
             0:8] + ' || ' + message.from_user.full_name + ' || @' + message.from_user.username + ' || ' + message.text
     url = 'https://api.telegram.org/bot' + config.TOKEN + '/sendMessage?chat_id=@dftcb_log&text=' + loger
     requests.get(url)
-    await message.reply(status)
+    await message.answer(status)
 
 
 @dp.message_handler(commands=['getbeta'])
@@ -63,7 +63,7 @@ async def get_beta(message: types.Message):
             0:8] + ' || ' + message.from_user.full_name + ' || @' + message.from_user.username + ' || ' + message.text
     url = 'https://api.telegram.org/bot' + config.TOKEN + '/sendMessage?chat_id=@dftcb_log&text=' + loger
     requests.get(url)
-    await message.reply(beta)
+    await message.answer(beta)
 
 
 @dp.message_handler(commands=['getstable'])
@@ -88,7 +88,7 @@ async def get_stable(message: types.Message):
             0:8] + ' || ' + message.from_user.full_name + ' || @' + message.from_user.username + ' || ' + message.text
     url = 'https://api.telegram.org/bot' + config.TOKEN + '/sendMessage?chat_id=@dftcb_log&text=' + loger
     requests.get(url)
-    await message.reply(stable)
+    await message.answer(stable)
 
 
 @dp.message_handler(commands=['getlast'])
@@ -117,7 +117,7 @@ async def get_last(message: types.Message):
             0:8] + ' || ' + message.from_user.full_name + ' || @' + message.from_user.username + ' || ' + message.text
     url = 'https://api.telegram.org/bot' + config.TOKEN + '/sendMessage?chat_id=@dftcb_log&text=' + loger
     requests.get(url)
-    await message.reply(last)
+    await message.answer(last)
 
 
 @dp.message_handler(commands=['post'])
@@ -153,7 +153,7 @@ async def post_channel(message: types.Message):
                     0:8] + ' || ' + message.from_user.full_name + ' || @' + message.from_user.username + ' || ' + message.text
             url = 'https://api.telegram.org/bot' + config.TOKEN + '/sendMessage?chat_id=@dftcb_log&text=' + loger
             requests.get(url)
-            await message.reply("Done!")
+            await message.answer("Done!")
 
 
 @dp.message_handler()
