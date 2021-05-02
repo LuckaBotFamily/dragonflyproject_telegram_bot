@@ -1,3 +1,4 @@
+import time
 from datetime import datetime
 import requests
 from aiogram import Bot, types
@@ -27,6 +28,10 @@ async def state(message: types.Message):
     state = 'Последнее обновление: '+lst_updt+'\n' \
             'Количество скачиваний: '+week_dwnl+'\n'
     await message.answer(state)
+    time.sleep(5)
+    url = 'https://api.telegram.org/bot' + config.TOKEN + '/deleteMessage?chat_id=' + str(
+        message.chat.id) + '&message_id=' + str(message.message_id)
+    requests.get(url)
 
 
 @dp.message_handler(commands=['status'])
@@ -39,6 +44,10 @@ async def status(message: types.Message):
     url = 'https://api.telegram.org/bot' + config.TOKEN + '/sendMessage?chat_id=@dftcb_log&text=' + loger
     requests.get(url)
     await message.answer(status)
+    time.sleep(5)
+    url = 'https://api.telegram.org/bot' + config.TOKEN + '/deleteMessage?chat_id=' + str(
+        message.chat.id) + '&message_id=' + str(message.message_id)
+    requests.get(url)
 
 
 @dp.message_handler(commands=['getbeta'])
@@ -64,6 +73,10 @@ async def get_beta(message: types.Message):
     url = 'https://api.telegram.org/bot' + config.TOKEN + '/sendMessage?chat_id=@dftcb_log&text=' + loger
     requests.get(url)
     await message.answer(beta)
+    time.sleep(5)
+    url = 'https://api.telegram.org/bot' + config.TOKEN + '/deleteMessage?chat_id=' + str(
+        message.chat.id) + '&message_id=' + str(message.message_id)
+    requests.get(url)
 
 
 @dp.message_handler(commands=['getstable'])
@@ -89,7 +102,10 @@ async def get_stable(message: types.Message):
     url = 'https://api.telegram.org/bot' + config.TOKEN + '/sendMessage?chat_id=@dftcb_log&text=' + loger
     requests.get(url)
     await message.answer(stable)
-
+    time.sleep(5)
+    url = 'https://api.telegram.org/bot' + config.TOKEN + '/deleteMessage?chat_id=' + str(
+        message.chat.id) + '&message_id=' + str(message.message_id)
+    requests.get(url)
 
 @dp.message_handler(commands=['getlast'])
 async def get_last(message: types.Message):
@@ -118,7 +134,10 @@ async def get_last(message: types.Message):
     url = 'https://api.telegram.org/bot' + config.TOKEN + '/sendMessage?chat_id=@dftcb_log&text=' + loger
     requests.get(url)
     await message.answer(last)
-
+    time.sleep(5)
+    url = 'https://api.telegram.org/bot' + config.TOKEN + '/deleteMessage?chat_id=' + str(
+        message.chat.id) + '&message_id=' + str(message.message_id)
+    requests.get(url)
 
 @dp.message_handler(commands=['post'])
 async def post_channel(message: types.Message):
@@ -154,6 +173,10 @@ async def post_channel(message: types.Message):
             url = 'https://api.telegram.org/bot' + config.TOKEN + '/sendMessage?chat_id=@dftcb_log&text=' + loger
             requests.get(url)
             await message.answer("Done!")
+            time.sleep(5)
+            url = 'https://api.telegram.org/bot' + config.TOKEN + '/deleteMessage?chat_id=' + str(
+                message.chat.id) + '&message_id=' + str(message.message_id)
+            requests.get(url)
 
 
 @dp.message_handler()
