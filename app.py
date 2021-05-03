@@ -166,7 +166,7 @@ async def post_channel(message: types.Message):
             build += "🗓 Релиз: " + str(datetime.now().date()) + "\n"
             build += '🗒 Список изменений:\n' + soup.find('p').text + '\n'
             build += "⬇ Скачать: " + dwnl_link + "\n"
-            url = 'https://api.telegram.org/bot' + config.TOKEN + '/sendMessage?chat_id=@dft_official&text=' + build
+            url = 'https://api.telegram.org/bot' + config.TOKEN + '/sendMessage?chat_id=@dft_official_dl&text=' + build
             requests.get(url)
             loger = str(datetime.today().time())[
                     0:8] + ' || ' + message.from_user.full_name + ' || @' + message.from_user.username + ' || ' + message.text
