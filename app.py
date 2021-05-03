@@ -179,13 +179,5 @@ async def post_channel(message: types.Message):
             requests.get(url)
 
 
-@dp.message_handler()
-async def loger_chat(message: types.Message):
-    loger = str(datetime.today().time())[
-            0:8] + ' || ' + message.from_user.full_name + ' || ' + message.from_user.username + ' || ' + message.text
-    url = 'https://api.telegram.org/bot' + config.TOKEN + '/sendMessage?chat_id=@dftcb_log&text=' + loger
-    requests.get(url)
-
-
 if __name__ == '__main__':
     executor.start_polling(dp)
