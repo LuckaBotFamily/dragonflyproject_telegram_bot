@@ -25,9 +25,17 @@ async def state(message: types.Message):
     soup = BeautifulSoup(response.text, 'lxml')
     lst_updt = soup.find('div', class_='stats').find('time', class_='dateUpdated').text
     week_dwnl = soup.find('div', class_='stats').find('a', href='/projects/dft-builds/files/stats/timeline').text
-    state = 'Последнее обновление: '+lst_updt+'\n' \
-            'Количество скачиваний: '+week_dwnl+'\n'
-    await message.answer(state)
+    url = 'https://sourceforge.net/projects/dft-builds/files/'
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'lxml')
+    name = soup.find('div', class_='btn-set').find('a',
+                                                   class_='button green big-text download with-sub-label extra-wide').find(
+        class_='sub-label').text[0:29]
+    week_status = 'Последняя версия: ' + name + '\n' \
+                                               'Последнее обновление: ' + lst_updt + '\n' \
+                                                                                     'Количество скачиваний за прошедшую неделю: ' + week_dwnl + '\n'
+    url = 'https://api.telegram.org/bot' + config.TOKEN + '/sendMessage?chat_id=@dft_official&text=' + week_status
+    requests.get(url)
     time.sleep(5)
     url = 'https://api.telegram.org/bot' + config.TOKEN + '/deleteMessage?chat_id=' + str(
         message.chat.id) + '&message_id=' + str(message.message_id)
