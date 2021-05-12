@@ -31,11 +31,10 @@ async def state(message: types.Message):
     name = soup.find('div', class_='btn-set').find('a',
                                                    class_='button green big-text download with-sub-label extra-wide').find(
         class_='sub-label').text[-0:-13]
-    week_status = 'Последняя версия: ' + name + '\n' \
-                                               'Последнее обновление: ' + lst_updt + '\n' \
-                                                                                     'Количество скачиваний за прошедшую неделю: ' + week_dwnl + '\n'
-    url = 'https://api.telegram.org/bot' + config.TOKEN + '/sendMessage?chat_id=@dft_official&text=' + week_status
-    requests.get(url)
+    week_status = '<b>Последняя версия:</b> <u>' + name + '</u>\n' \
+                                               '<b>Последнее обновление:</b> <u>' + lst_updt + '</u>\n' \
+                                                                                     '<b>Количество скачиваний за прошедшую неделю:</b> <u>' + week_dwnl + '</u>\n'
+    await message.answer(week_status, parse_mode='HTML')
     time.sleep(5)
     url = 'https://api.telegram.org/bot' + config.TOKEN + '/deleteMessage?chat_id=' + str(
         message.chat.id) + '&message_id=' + str(message.message_id)
@@ -71,16 +70,15 @@ async def get_beta(message: types.Message):
     response = requests.get(urld)
     soup = BeautifulSoup(response.text, 'lxml')
     link = str(url + name + ".zip/download")
-    beta = "💎 Версия: " + name + "\n"
-    beta += "🛠 Канал обновления: Beta\n"
-    beta += "🗓 Релиз: " + date.text + "\n"
-    beta += '🗒 Список изменений:\n' + soup.find('p').text + '\n'
-    beta += "⬇ Скачать: " + link + "\n"
+    beta = "💎 <b>Версия:</b> <u>" + name + "</u>\n"
+    beta += "🛠 <b>Канал обновления:</b> <u>Beta</u>\n"
+    beta += '🗒 <b>Список изменений:</b>\n' + soup.find('p').text + '\n'
+    beta += "⬇ <b>Скачать:</b> " + link + "\n"
     loger = str(datetime.today().time())[
             0:8] + ' || ' + message.from_user.full_name + ' || @' + message.from_user.username + ' || ' + message.text
     url = 'https://api.telegram.org/bot' + config.TOKEN + '/sendMessage?chat_id=@dftcb_log&text=' + loger
     requests.get(url)
-    await message.answer(beta)
+    await message.answer(beta, parse_mode='HTML')
     time.sleep(5)
     url = 'https://api.telegram.org/bot' + config.TOKEN + '/deleteMessage?chat_id=' + str(
         message.chat.id) + '&message_id=' + str(message.message_id)
@@ -100,20 +98,21 @@ async def get_stable(message: types.Message):
     response = requests.get(urld)
     soup = BeautifulSoup(response.text, 'lxml')
     link = str(url + name + ".zip/download")
-    stable = "💎 Версия: " + name + "\n"
-    stable += "🛠 Канал обновления: Stable\n"
-    stable += "🗓 Релиз : " + date.text + "\n"
-    stable += '🗒 Список изменений:\n' + soup.find('p').text + '\n'
-    stable += "⬇ Скачать: " + link + "\n"
+    stable = "💎 <b>Версия:</b> <u>" + name + "</u>\n"
+    stable += "🛠 <b>Канал обновления:</b> <u>Stable</u>\n"
+    stable += "🗓 <b>Релиз:</b> <u>" + date.text + "</u>\n"
+    stable += '🗒 <b>Список изменений:</b>\n' + soup.find('p').text + '\n'
+    stable += "⬇ <b>Скачать:</b> " + link + "\n"
     loger = str(datetime.today().time())[
             0:8] + ' || ' + message.from_user.full_name + ' || @' + message.from_user.username + ' || ' + message.text
     url = 'https://api.telegram.org/bot' + config.TOKEN + '/sendMessage?chat_id=@dftcb_log&text=' + loger
     requests.get(url)
-    await message.answer(stable)
+    await message.answer(stable, parse_mode='HTML')
     time.sleep(5)
     url = 'https://api.telegram.org/bot' + config.TOKEN + '/deleteMessage?chat_id=' + str(
         message.chat.id) + '&message_id=' + str(message.message_id)
     requests.get(url)
+
 
 @dp.message_handler(commands=['getlast'])
 async def get_last(message: types.Message):
@@ -128,20 +127,20 @@ async def get_last(message: types.Message):
     url_builds = 'https://sourceforge.net/projects/dft-builds/'
     resp = requests.get(url_builds)
     sou = BeautifulSoup(resp.text, 'lxml')
-    date = sou.find('div', class_='stats').find('time').text
+    date = sou.find('div', class_='stats').find('time')
     urld = 'https://raw.githubusercontent.com/Dragonfly-Project/changelogs/master/' + name + '.txt'
     response = requests.get(urld)
     soup = BeautifulSoup(response.text, 'lxml')
-    last = "💎 Версия: " + name + "\n"
-    last += '🛠 Канал обновления: Last\n'
-    last += '🗓 Релиз :' + date + '\n '
-    last += '🗒 Список изменений:\n' + soup.find('p').text + '\n'
-    last += '⬇ Скачать: ' + dwnl_link + '\n '
+    last = "💎 <b>Версия:</b> <u>" + name + "</u>\n"
+    last += '🛠 <b>Канал обновления:</b> <u>Last</u>\n'
+    last += "🗓 <b>Релиз:</b> <u>" + date.text + "</u>\n"
+    last += '🗒 <b>Список изменений:</b>\n' + soup.find('p').text + '\n'
+    last += '⬇ <b>Скачать:</b> ' + dwnl_link + '\n '
     loger = str(datetime.today().time())[
             0:8] + ' || ' + message.from_user.full_name + ' || @' + message.from_user.username + ' || ' + message.text
     url = 'https://api.telegram.org/bot' + config.TOKEN + '/sendMessage?chat_id=@dftcb_log&text=' + loger
     requests.get(url)
-    await message.answer(last)
+    await message.answer(last, parse_mode='HTML')
     time.sleep(5)
     url = 'https://api.telegram.org/bot' + config.TOKEN + '/deleteMessage?chat_id=' + str(
         message.chat.id) + '&message_id=' + str(message.message_id)
@@ -168,13 +167,13 @@ async def post_channel(message: types.Message):
             urld = 'https://raw.githubusercontent.com/Dragonfly-Project/changelogs/master/' + name + '.txt'
             response = requests.get(urld)
             soup = BeautifulSoup(response.text, 'lxml')
-            build = '❗ Новое обновление\n'
-            build += '💎 Версия: ' + name + '\n'
-            build += "🛠 Канал обновления: " + chan + "!\n"
-            build += "🗓 Релиз: " + str(datetime.now().date()) + "\n"
-            build += '🗒 Список изменений:\n' + soup.find('p').text + '\n'
-            build += "⬇ Скачать: " + dwnl_link + "\n"
-            url = 'https://api.telegram.org/bot' + config.TOKEN + '/sendMessage?chat_id=@dft_official_dl&text=' + build
+            build = '❗ <b>Новое обновление\n'
+            build += "💎 <b>Версия:</b> <u>" + name + "</u>\n"
+            build += "🛠 <b>Канал обновления:</b> <u>" + chan + "!</u>\n"
+            build += "🗓 <b>Релиз:</b> <u>" + str(datetime.now().date()) + "</u>\n"
+            build += '🗒 <b>Список изменений:</b>\n' + soup.find('p').text + '\n'
+            build += "⬇ <b>Скачать:</b> " + dwnl_link + "\n"
+            url = 'https://api.telegram.org/bot' + config.TOKEN + '/sendMessage?chat_id=@dft_official_dl&parse_mode=HTML&text=' + build
             requests.get(url)
             loger = str(datetime.today().time())[
                     0:8] + ' || ' + message.from_user.full_name + ' || @' + message.from_user.username + ' || ' + message.text
