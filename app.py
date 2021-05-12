@@ -30,7 +30,7 @@ async def state(message: types.Message):
     soup = BeautifulSoup(response.text, 'lxml')
     name = soup.find('div', class_='btn-set').find('a',
                                                    class_='button green big-text download with-sub-label extra-wide').find(
-        class_='sub-label').text[0:29]
+        class_='sub-label').text[-0:-13]
     week_status = 'Последняя версия: ' + name + '\n' \
                                                'Последнее обновление: ' + lst_updt + '\n' \
                                                                                      'Количество скачиваний за прошедшую неделю: ' + week_dwnl + '\n'
@@ -65,7 +65,7 @@ async def get_beta(message: types.Message):
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'lxml')
     list = soup.find('tr', class_='file')
-    name = list.find('span', class_='name').text[0:29]
+    name = list.find('span', class_='name').text[-0:-4]
     date = soup.find('abbr')
     urld = 'https://raw.githubusercontent.com/Dragonfly-Project/changelogs/master/' + name + '.txt'
     response = requests.get(urld)
@@ -94,7 +94,7 @@ async def get_stable(message: types.Message):
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'lxml')
     list = soup.find('tr', class_='file')
-    name = list.find('span', class_='name').text[0:29]
+    name = list.find('span', class_='name').text[-0:-4]
     date = soup.find('abbr')
     urld = 'https://raw.githubusercontent.com/Dragonfly-Project/changelogs/master/' + name + '.txt'
     response = requests.get(urld)
@@ -124,7 +124,7 @@ async def get_last(message: types.Message):
     soup = BeautifulSoup(response.text, 'lxml')
     name = soup.find('div', class_='btn-set').find('a', class_='button green big-text'
                                                                ' download with-sub-label extra-wide').find(
-        class_='sub-label').text[0:29]
+        class_='sub-label').text[-0:-13]
     url_builds = 'https://sourceforge.net/projects/dft-builds/'
     resp = requests.get(url_builds)
     sou = BeautifulSoup(resp.text, 'lxml')
@@ -164,7 +164,7 @@ async def post_channel(message: types.Message):
                 chan = 'Стабильный'
             name = soup.find('div', class_='btn-set').find('a',
                                                            class_='button green big-text download with-sub-label extra-wide').find(
-                class_='sub-label').text[0:29]
+                class_='sub-label').text[-0:-13]
             urld = 'https://raw.githubusercontent.com/Dragonfly-Project/changelogs/master/' + name + '.txt'
             response = requests.get(urld)
             soup = BeautifulSoup(response.text, 'lxml')
