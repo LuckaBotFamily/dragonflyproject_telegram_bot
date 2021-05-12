@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 import config
 
 startTime = datetime.now()
-bot = Bot(token=config.TOKEN)
+bot = Bot(token=config.TOKEN, parse_mode='HTML')
 dp = Dispatcher(bot)
 ADMINS = config.ADMINS
 
