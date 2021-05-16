@@ -152,27 +152,29 @@ async def post_channel(message: types.Message):
     for ADMIN in ADMINS:
         if message.from_user.id == ADMIN:
             url = 'https://sourceforge.net/projects/dft-builds/files/'
-            dwnl_link = 'https://sourceforge.net/projects/dft-builds/files/latest/download'
             response = requests.get(url)
             soup = BeautifulSoup(response.text, 'lxml')
             ch = soup.find('div', class_='btn-set')
             channel = str(ch.find('a', class_='button green big-text download with-sub-label extra-wide'))
             if channel[126] == 'b':
                 chan = 'Бета'
+                vers = 'beta'
             else:
                 chan = 'Стабильный'
+                vers = 'stable'
             name = soup.find('div', class_='btn-set').find('a',
                                                            class_='button green big-text download with-sub-label extra-wide').find(
                 class_='sub-label').text[-0:-13]
+            dwnl_link = 'https://sourceforge.net/projects/dft-builds/files/'+vers+'/'+name+'.zip/download'
             urld = 'https://raw.githubusercontent.com/Dragonfly-Project/changelogs/master/' + name + '.txt'
             response = requests.get(urld)
             soup = BeautifulSoup(response.text, 'lxml')
-            build = '❗ <b>Новое обновление\n'
-            build += "💎 <b>Версия:</b> <u>" + name + "</u>\n"
-            build += "🛠 <b>Канал обновления:</b> <u>" + chan + "!</u>\n"
-            build += "🗓 <b>Релиз:</b> <u>" + str(datetime.now().date()) + "</u>\n"
-            build += '🗒 <b>Список изменений:</b>\n' + soup.find('p').text + '\n'
-            build += "⬇ <b>Скачать:</b> " + dwnl_link + "\n"
+            build = '❗ Новое обновление\n'
+            build += '💎 Версия: ' + name + '\n'
+            build += "🛠 Канал обновления: " + chan + "!\n"
+            build += "🗓 Релиз: " + str(datetime.now().date()) + "\n"
+            build += '🗒 Список изменений:\n' + soup.find('p').text + '\n'
+            build += "⬇ Скачать: " + dwnl_link + "\n"
             url = 'https://api.telegram.org/bot' + config.TOKEN + '/sendMessage?chat_id=@dft_official_dl&parse_mode=HTML&text=' + build
             requests.get(url)
             loger = str(datetime.today().time())[
