@@ -93,14 +93,12 @@ async def get_stable(message: types.Message):
     soup = BeautifulSoup(response.text, 'lxml')
     list = soup.find('tr', class_='file')
     name = list.find('span', class_='name').text[-0:-4]
-    date = soup.find('abbr')
     urld = 'https://raw.githubusercontent.com/Dragonfly-Project/changelogs/master/' + name + '.txt'
     response = requests.get(urld)
     soup = BeautifulSoup(response.text, 'lxml')
     link = str(url + name + ".zip/download")
     stable = "💎 <b>Версия:</b> <u>" + name + "</u>\n"
     stable += "🛠 <b>Канал обновления:</b> <u>Stable</u>\n"
-    stable += "🗓 <b>Релиз:</b> <u>" + date.text + "</u>\n"
     stable += '🗒 <b>Список изменений:</b>\n' + soup.find('p').text + '\n'
     stable += "⬇ <b>Скачать:</b> " + link + "\n"
     loger = str(datetime.today().time())[
