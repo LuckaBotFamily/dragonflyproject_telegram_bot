@@ -116,12 +116,20 @@ async def get_stable(message: types.Message):
 async def get_last(message: types.Message):
     print(message.from_user.full_name + ' || @' + message.from_user.username + ' || ' + message.text)
     url = 'https://sourceforge.net/projects/dft-builds/files/'
-    dwnl_link = 'https://sourceforge.net/projects/dft-builds/files/latest/download'
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'lxml')
     name = soup.find('div', class_='btn-set').find('a', class_='button green big-text'
                                                                ' download with-sub-label extra-wide').find(
         class_='sub-label').text[-0:-13]
+    ch = soup.find('div', class_='btn-set')
+    channel = str(ch.find('a', class_='button green big-text download with-sub-label extra-wide'))
+    if channel[126] == 'b':
+        chan = 'Бета'
+        vers = 'beta'
+    else:
+        chan = 'Стабильный'
+        vers = 'stable'
+    dwnl_link = 'https://sourceforge.net/projects/dft-builds/files/' + vers + '/' + name + '.zip/download'
     url_builds = 'https://sourceforge.net/projects/dft-builds/'
     resp = requests.get(url_builds)
     sou = BeautifulSoup(resp.text, 'lxml')
@@ -130,7 +138,7 @@ async def get_last(message: types.Message):
     response = requests.get(urld)
     soup = BeautifulSoup(response.text, 'lxml')
     last = "💎 <b>Версия:</b> <u>" + name + "</u>\n"
-    last += '🛠 <b>Канал обновления:</b> <u>Last</u>\n'
+    last += '🛠 <b>Канал обновления:</b> <u>'+chan+'</u>!\n'
     last += "🗓 <b>Релиз:</b> <u>" + date.text + "</u>\n"
     last += '🗒 <b>Список изменений:</b>\n' + soup.find('p').text + '\n'
     last += '⬇ <b>Скачать:</b> ' + dwnl_link + '\n '
