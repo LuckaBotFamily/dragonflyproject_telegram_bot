@@ -115,32 +115,19 @@ async def get_stable(message: types.Message):
 @dp.message_handler(commands=['getlast'])
 async def get_last(message: types.Message):
     print(message.from_user.full_name + ' || @' + message.from_user.username + ' || ' + message.text)
-    url = 'https://sourceforge.net/projects/dft-builds/files/'
+    url = 'https://raw.githubusercontent.com/Dragonfly-Project/json/main/last.txt'
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'lxml')
-    name = soup.find('div', class_='btn-set').find('a', class_='button green big-text'
-                                                               ' download with-sub-label extra-wide').find(
-        class_='sub-label').text[-0:-13]
-    ch = soup.find('div', class_='btn-set')
-    channel = str(ch.find('a', class_='button green big-text download with-sub-label extra-wide'))
-    if channel[126] == 'b':
-        chan = 'Бета'
-        vers = 'beta'
-    else:
-        chan = 'Стабильный'
-        vers = 'stable'
-    dwnl_link = 'https://sourceforge.net/projects/dft-builds/files/' + vers + '/' + name + '.zip/download'
-    url_builds = 'https://sourceforge.net/projects/dft-builds/'
-    resp = requests.get(url_builds)
-    sou = BeautifulSoup(resp.text, 'lxml')
-    date = sou.find('div', class_='stats').find('time')
-    urld = 'https://raw.githubusercontent.com/Dragonfly-Project/changelogs/master/' + name + '.txt'
-    response = requests.get(urld)
-    soup = BeautifulSoup(response.text, 'lxml')
+    list = soup.find()
+    name = list.find(class_='name').text
+    chan = list.find(class_='type').text
+    date = list.find(class_='date').text
+    changelog = list.find(class_='changelog').text
+    dwnl_link = list.find(class_='downloadLink').text
     last = "💎 <b>Версия:</b> <u>" + name + "</u>\n"
     last += '🛠 <b>Канал обновления:</b> <u>'+chan+'</u>!\n'
-    last += "🗓 <b>Релиз:</b> <u>" + date.text + "</u>\n"
-    last += '🗒 <b>Список изменений:</b>\n' + soup.find('p').text + '\n'
+    last += "🗓 <b>Релиз:</b> <u>" + date + "</u>\n"
+    last += '🗒 <b>Список изменений:</b>\n' + changelog + '\n'
     last += '⬇ <b>Скачать:</b> ' + dwnl_link + '\n '
     loger = str(datetime.today().time())[
             0:8] + ' || ' + message.from_user.full_name + ' || @' + message.from_user.username + ' || ' + message.text
@@ -157,29 +144,20 @@ async def post_channel(message: types.Message):
     print(message.from_user.full_name + ' || @' + message.from_user.username + ' || ' + message.text)
     for ADMIN in ADMINS:
         if message.from_user.id == ADMIN:
-            url = 'https://sourceforge.net/projects/dft-builds/files/'
+            url = 'https://raw.githubusercontent.com/Dragonfly-Project/json/main/last.txt'
             response = requests.get(url)
             soup = BeautifulSoup(response.text, 'lxml')
-            ch = soup.find('div', class_='btn-set')
-            channel = str(ch.find('a', class_='button green big-text download with-sub-label extra-wide'))
-            if channel[126] == 'b':
-                chan = 'Бета'
-                vers = 'beta'
-            else:
-                chan = 'Стабильный'
-                vers = 'stable'
-            name = soup.find('div', class_='btn-set').find('a',
-                                                           class_='button green big-text download with-sub-label extra-wide').find(
-                class_='sub-label').text[-0:-13]
-            dwnl_link = 'https://sourceforge.net/projects/dft-builds/files/'+vers+'/'+name+'.zip/download'
-            urld = 'https://raw.githubusercontent.com/Dragonfly-Project/changelogs/master/' + name + '.txt'
-            response = requests.get(urld)
-            soup = BeautifulSoup(response.text, 'lxml')
+            list = soup.find()
+            name = list.find(class_='name').text
+            chan = list.find(class_='type').text
+            date = list.find(class_='date').text
+            changelog = list.find(class_='changelog').text
+            dwnl_link = list.find(class_='downloadLink').text
             build = '❗ Новое обновление\n'
             build += '💎 Версия: ' + name + '\n'
             build += "🛠 Канал обновления: " + chan + "!\n"
-            build += "🗓 Релиз: " + str(datetime.now().date()) + "\n"
-            build += '🗒 Список изменений:\n' + soup.find('p').text + '\n'
+            build += "🗓 Релиз: " + date + "\n"
+            build += '🗒 Список изменений:\n' + changelog+ '\n'
             build += "⬇ Скачать: " + dwnl_link + "\n"
             url = 'https://api.telegram.org/bot' + config.TOKEN + '/sendMessage?chat_id=@dft_official_dl&parse_mode=HTML&text=' + build
             requests.get(url)
